@@ -1,429 +1,142 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MOURMAR</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #fceade;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            font-family: system-ui, -apple-system, sans-serif;
-            user-select: none;
-            direction: rtl;
-            touch-action: none;
-            overflow: hidden;
-        }
-        #instructions {
-            margin-bottom: 10px;
-            text-align: center;
-            font-weight: bold;
-            color: #eb5e55;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-        #game-container {
-            position: relative;
-            box-shadow: 0 20px 40px rgba(235, 94, 85, 0.2);
-            border-radius: 16px;
-            overflow: hidden;
-            background: #fff;
-            width: 850px;
-            height: 480px;
-            max-width: 100vw;
-            max-height: 100vh;
-        }
-        canvas {
-            display: block;
-            background-color: #fff4f0;
-            width: 100%;
-            height: 100%;
-        }
-        .ui-layer {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            display: flex;
-            justify-content: space-between;
-            pointer-events: none;
-            font-weight: bold;
-            font-size: 16px;
-            color: #eb5e55;
-            z-index: 10;
-        }
-        .ui-item {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 6px 14px;
-            border-radius: 20px;
-            backdrop-filter: blur(4px);
-            border: 2px solid #fca590;
-        }
-        
-        /* --- إعدادات أزرار التحكم باللمس --- */
-        #mobile-controls {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            display: none; /* مخفية افتراضياً على الحاسوب */
-            justify-content: space-between;
-            align-items: center;
-            z-index: 10;
-        }
-        
-        /* إظهار الأزرار فقط في الأجهزة التي تدعم اللمس والأشبه بالجوالات */
-        @media (pointer: coarse) {
-            #mobile-controls {
-                display: flex; /* تظهر فقط في الجوالات والتابلت */
-            }
-            #instructions {
-                display: none; /* إخفاء نص تعليمات الكيبورد في الجوال */
-            }
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOURMAR EMPLOI</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;}
 
-        .touch-btn {
-            background: rgba(235, 94, 85, 0.25);
-            border: 3px solid #eb5e55;
-            border-radius: 50%;
-            width: 70px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #eb5e55;
-            font-size: 28px;
-            font-weight: bold;
-            -webkit-user-select: none;
-            user-select: none;
-        }
-        .touch-btn:active {
-            background: rgba(235, 94, 85, 0.5);
-        }
-        .dir-buttons {
-            display: flex;
-            gap: 20px;
-        }
-        #btn-restart {
-            width: 50px;
-            height: 50px;
-            font-size: 18px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.7);
-        }
-    </style>
+/* خلفية مريحة وناعمة للعين */
+body{background:#f8fafc;color:#1e293b;}
+
+/* هيدر جديد بلون أزرق مفعم بالأمل والحيوية */
+header{background:linear-gradient(135deg, #1e40af, #2563eb);color:#fff;padding:40px 24px;text-align:center;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);}
+header h1{font-size:30px;font-weight:700;letter-spacing:3px;margin-bottom:8px;}
+header p{font-size:14px;color:rgba(255,255,255,0.8);letter-spacing:1px;font-weight:300;}
+
+/* قائمة تنقل بتصميم عصري */
+nav{display:flex;justify-content:center;gap:12px;padding:16px 24px;background:#fff;border-bottom:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,0.02);}
+nav button{padding:10px 24px;border:1px solid #cbd5e1;background:transparent;cursor:pointer;font-weight:600;font-size:14px;border-radius:24px;color:#64748b;transition:.2s;}
+nav button:hover,nav button.active-btn{background:#2563eb;color:#fff;border-color:#2563eb;box-shadow:0 4px 12px rgba(37,99,235,0.2);}
+
+section{display:none;padding:40px 24px;max-width:900px;margin:auto;}
+.active{display:block;}
+
+.home-hero{text-align:center;padding:48px 24px;}
+.home-hero h2{font-size:26px;font-weight:600;margin-bottom:16px;color:#0f172a;}
+.home-hero p{font-size:16px;color:#475569;line-height:1.8;max-width:560px;margin:auto;}
+
+/* إحصائيات بلمسة ملونة ومبهجة */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:520px;margin:40px auto 0;}
+.stat{background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);border:1px solid #e2e8f0;}
+.stat .num{font-size:26px;font-weight:700;color:#2563eb;}
+.stat .lbl{font-size:13px;color:#64748b;margin-top:6px;font-weight:500;}
+
+/* بطاقات وظائف أنيقة ومعاصرة */
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px;margin-bottom:20px;transition:.3s;box-shadow:0 4px 6px -1px rgba(0,0,0,0.02);}
+.card:hover{border-color:#3b82f6;transform:translateY(-2px);box-shadow:0 10px 15px -3px rgba(0,0,0,0.05);}
+.card-top{display:flex;align-items:center;gap:16px;margin-bottom:16px;}
+
+/* دائرة اللوجو بألوان متناسقة */
+.logo-circle{width:56px;height:56px;border-radius:12px;background:#eff6ff;border:1px solid #bfdbfe;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:#2563eb;flex-shrink:0;}
+.card h2{font-size:19px;font-weight:600;margin-bottom:6px;color:#0f172a;}
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;background:#ecfdf5;color:#059669;border:1px solid #a7f3d0;}
+
+.card-meta{display:flex;gap:24px;margin-bottom:20px;flex-wrap:wrap;}
+.meta-item{display:flex;align-items:center;gap:6px;font-size:14px;color:#64748b;}
+.meta-item i{font-size:16px;color:#94a3b8;}
+
+/* تغيير لون الراتب إلى الأخضر ليعطي انطباعاً إيجابياً */
+.salary{font-size:20px;font-weight:600;margin-bottom:20px;color:#16a34a;}
+
+/* أزرار تفاعلية زرقاء */
+.link{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;background:#2563eb;color:#fff;text-decoration:none;border-radius:24px;font-size:14px;font-weight:600;transition:.2s;box-shadow:0 4px 12px rgba(37,99,235,0.15);}
+.link:hover{background:#1d4ed8;transform:scale(1.02);}
+
+.companies-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;}
+.company-card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px 20px;text-align:center;transition:.3s;box-shadow:0 4px 6px -1px rgba(0,0,0,0.02);}
+.company-card:hover{border-color:#3b82f6;transform:translateY(-2px);box-shadow:0 10px 15px -3px rgba(0,0,0,0.05);}
+.company-logo{width:64px;height:64px;border-radius:16px;background:#f0fdf4;border:1px solid #bbf7d0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;color:#16a34a;margin:0 auto 16px;}
+.company-name{font-size:15px;font-weight:600;color:#0f172a;}
+.company-type{font-size:13px;color:#64748b;margin-top:6px;}
+</style>
 </head>
 <body>
 
-<div id="instructions">
-    الكمبيوتر: **A / D** للحركة | **Space / W** للقفز | **R** لإعادة المحاولة فوراً
-</div>
+<header>
+  <h1>MOURMAR EMPLOI</h1>
+  <p>PLATEFORME D'EMPLOI AU MAROC</p>
+</header>
 
-<div id="game-container">
-    <div class="ui-layer">
-        <div class="ui-item">المستوى: <span id="lvl-ui">1</span>/12</div>
-        <div class="ui-item">العملات: <span id="coin-ui">0</span></div>
-        <div class="ui-item">المحاولات: <span id="death-ui">1</span></div>
-    </div>
-    
-    <canvas id="gameCanvas" width="850" height="480"></canvas>
+<nav>
+  <button class="active-btn" onclick="showPage('home',this)">Accueil</button>
+  <button onclick="showPage('jobs',this)">Offres</button>
+  <button onclick="showPage('companies',this)">Entreprises</button>
+</nav>
 
-    <div id="mobile-controls">
-        <div class="dir-buttons">
-            <div class="touch-btn" id="btn-left">➔</div>
-            <div class="touch-btn" id="btn-right">➔</div>
-        </div>
-        <div class="touch-btn" id="btn-restart">R</div>
-        <div class="touch-btn" id="btn-jump">▲</div>
+<section id="home" class="active">
+  <div class="home-hero">
+    <h2>Trouvez votre emploi idéal au Maroc</h2>
+    <p>MOURMAR EMPLOI est une plateforme qui présente des offres d'emploi publiées par différentes entreprises. Notre objectif est d'aider les candidats à trouver un emploi facilement.</p>
+    <div class="stat-row">
+      <div class="stat"><div class="num">24+</div><div class="lbl">Offres actives</div></div>
+      <div class="stat"><div class="num">12</div><div class="lbl">Entreprises</div></div>
+      <div class="stat"><div class="num">6</div><div class="lbl">Villes</div></div>
     </div>
-</div>
+  </div>
+</section>
+
+<section id="jobs">
+  <div class="card">
+    <div class="card-top">
+      <div class="logo-circle">TM</div>
+      <div>
+        <h2>Développeur Web</h2>
+        <span class="badge">CDI</span>
+      </div>
+    </div>
+    <div class="card-meta">
+      <span class="meta-item"><i class="ti ti-building"></i> Tech Maroc</span>
+      <span class="meta-item"><i class="ti ti-map-pin"></i> Rabat</span>
+      <span class="meta-item"><i class="ti ti-briefcase"></i> Temps plein</span>
+    </div>
+    <div class="salary">8 000 DH / mois</div>
+    <a class="link" href="https://example.com" target="_blank">
+      <i class="ti ti-external-link"></i> Visiter le site
+    </a>
+  </div>
+</section>
+
+<section id="companies">
+  <div class="companies-grid">
+    <div class="company-card">
+      <div class="company-logo">TM</div>
+      <div class="company-name">Tech Maroc</div>
+      <div class="company-type">Technologie</div>
+    </div>
+    <div class="company-card">
+      <div class="company-logo">AG</div>
+      <div class="company-name">Atlas Group</div>
+      <div class="company-type">Groupe industriel</div>
+    </div>
+    <div class="company-card">
+      <div class="company-logo">DP</div>
+      <div class="company-name">Digital Pro</div>
+      <div class="company-type">Marketing digital</div>
+    </div>
+  </div>
+</section>
 
 <script>
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
-
-let gameState = { level: 0, coins: 0, attempts: 1, skinColor: "#eb5e55" };
-if (localStorage.getItem("rage_platformer_mobile_save")) {
-    try { gameState = JSON.parse(localStorage.getItem("rage_platformer_mobile_save")); } catch(e) {}
+function showPage(id, btn) {
+  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active-btn"));
+  document.getElementById(id).classList.add("active");
+  btn.classList.add("active-btn");
 }
-
-function updateUI() {
-    document.getElementById("coin-ui").innerText = gameState.coins;
-    document.getElementById("death-ui").innerText = gameState.attempts;
-    document.getElementById("lvl-ui").innerText = gameState.level + 1;
-}
-updateUI();
-
-function saveGame() {
-    localStorage.setItem("rage_platformer_mobile_save", JSON.stringify(gameState));
-}
-
-const keys = {};
-const touchControls = { left: false, right: false, jump: false };
-
-// التحكم عبر الكيبورد
-window.addEventListener("keydown", e => {
-    keys[e.code] = true;
-    if (e.code === "KeyR") player.die();
-});
-window.addEventListener("keyup", e => {
-    keys[e.code] = false;
-    if (e.code === "Space" || e.code === "KeyW" || e.code === "ArrowUp") player.cancelJump();
-});
-
-// تفعيل أزرار اللمس للجوال
-function setupTouchBtn(id, targetProp) {
-    const btn = document.getElementById(id);
-    btn.addEventListener("touchstart", (e) => { e.preventDefault(); touchControls[targetProp] = true; });
-    btn.addEventListener("touchend", (e) => { e.preventDefault(); touchControls[targetProp] = false; if(targetProp==='jump') player.cancelJump(); });
-}
-setupTouchBtn("btn-left", "left");
-setupTouchBtn("btn-right", "right");
-setupTouchBtn("btn-jump", "jump");
-
-document.getElementById("btn-restart").addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    player.die();
-});
-
-document.getElementById("btn-left").style.transform = "rotate(180deg)";
-
-let particles = [];
-function spawnParticles(x, y, color, count = 6) {
-    for (let i = 0; i < count; i++) {
-        particles.push({
-            x: x, y: y,
-            vx: (Math.random() - 0.5) * 5, vy: (Math.random() - 0.5) * 5,
-            radius: Math.random() * 3 + 2, alpha: 1, color: color
-        });
-    }
-}
-
-const player = {
-    x: 60, y: 350, w: 24, h: 24, vx: 0, vy: 0,
-    accel: 0.75, drag: 0.82, gravity: 0.44, fallGravityMultiplier: 1.5,
-    maxSpeed: 5.2, airControl: 0.85, jumpForce: 8.6, doubleJumpForce: 7.5,
-    maxJumps: 2, jumpsLeft: 2, isWallSliding: false, wallDir: 0,
-    coyoteTimer: 0, jumpDebounce: false, blinkTimer: 0, isBlinking: false,
-    squashX: 1, squashY: 1, deathTimer: 0, isDead: false, grounded: false,
-
-    update() {
-        if (this.isDead) {
-            this.deathTimer--;
-            this.squashX = 1.3; this.squashY = 0.5;
-            if (this.deathTimer <= 0) this.respawn();
-            return;
-        }
-
-        if (this.grounded) { this.coyoteTimer = 6; this.jumpsLeft = this.maxJumps; } 
-        else { this.coyoteTimer--; }
-
-        let inputX = 0;
-        if (keys["ArrowRight"] || keys["KeyD"] || touchControls.right) inputX = 1;
-        if (keys["ArrowLeft"] || keys["KeyA"] || touchControls.left) inputX = -1;
-
-        let currentAccel = this.grounded ? this.accel : this.accel * this.airControl;
-        this.vx += inputX * currentAccel;
-        this.vx *= this.drag;
-
-        if (Math.abs(this.vx) > this.maxSpeed) this.vx = Math.sign(this.vx) * this.maxSpeed;
-
-        if (this.vy > 0) this.vy += this.gravity * this.fallGravityMultiplier;
-        else this.vy += this.gravity;
-        if (this.vy > 12) this.vy = 12;
-
-        this.checkWallProximity();
-        if (this.isWallSliding && this.vy > 1.3) this.vy = 1.3;
-
-        if (keys["Space"] || keys["KeyW"] || keys["ArrowUp"] || touchControls.jump) {
-            this.handleJump();
-        } else {
-            this.jumpDebounce = false;
-        }
-
-        this.squashX += (1 - this.squashX) * 0.15;
-        this.squashY += (1 - this.squashY) * 0.15;
-
-        this.blinkTimer++;
-        if (this.blinkTimer > 130) { this.isBlinking = true; if (this.blinkTimer > 142) { this.isBlinking = false; this.blinkTimer = 0; } }
-
-        this.x += this.vx; this.resolveCollisions(this.vx, 0);
-        this.y += this.vy; this.grounded = false; this.resolveCollisions(0, this.vy);
-
-        if (this.y > canvas.height) this.die();
-    },
-
-    handleJump() {
-        if (this.jumpDebounce) return;
-        this.jumpDebounce = true;
-
-        if (this.grounded || this.coyoteTimer > 0) {
-            this.vy = -this.jumpForce; this.grounded = false; this.coyoteTimer = 0; this.jumpsLeft--;
-            this.squashX = 0.7; this.squashY = 1.3;
-            spawnParticles(this.x + this.w/2, this.y + this.h, "#fca590", 4);
-        } 
-        else if (this.isWallSliding) {
-            this.vy = -this.jumpForce * 0.88; this.vx = -this.wallDir * this.maxSpeed * 1.15;
-            this.jumpsLeft = this.maxJumps - 1;
-            this.squashX = 0.8; this.squashY = 1.2;
-            spawnParticles(this.x + this.w/2, this.y + this.h/2, "#eb5e55", 4);
-        } 
-        else if (this.jumpsLeft > 0) {
-            this.vy = -this.doubleJumpForce; this.jumpsLeft--;
-            this.squashX = 0.7; this.squashY = 1.3;
-            spawnParticles(this.x + this.w/2, this.y + this.h/2, "#fff", 5);
-        }
-    },
-
-    cancelJump() {
-        if (this.vy < -2) this.vy = -2;
-    },
-
-    checkWallProximity() {
-        this.isWallSliding = false; this.wallDir = 0;
-        if (this.grounded) return;
-        const currentLvl = levels[gameState.level];
-        currentLvl.elements.forEach(el => {
-            if (el.type === "ground" || el.type === "wall") {
-                let withinY = this.y + this.h > el.y && this.y < el.y + el.h;
-                if (withinY && Math.abs((this.x + this.w) - el.x) < 4) { this.isWallSliding = true; this.wallDir = 1; }
-                if (withinY && Math.abs(this.x - (el.x + el.w)) < 4) { this.isWallSliding = true; this.wallDir = -1; }
-            }
-        });
-    },
-
-    resolveCollisions(vx, vy) {
-        const currentLvl = levels[gameState.level];
-        currentLvl.elements.forEach(el => {
-            if (el.type === "disappearing" && el.timer > 35) return;
-
-            if (this.x < el.x + el.w && this.x + this.w > el.x &&
-                this.y < el.y + el.h && this.y + this.h > el.y) {
-                
-                if (el.type === "ground" || el.type === "wall" || el.type === "moving" || el.type === "disappearing") {
-                    if (vx > 0) this.x = el.x - this.w;
-                    if (vx < 0) this.x = el.x + el.w;
-                    if (vy > 0) { this.y = el.y - this.h; this.vy = 0; this.grounded = true; if (el.type === "moving") this.x += el.vx; }
-                    if (vy < 0) { this.y = el.y + el.h; this.vy = 0; }
-                }
-                if (el.type === "spike") this.die();
-                if (el.type === "coin" && !el.collected) {
-                    el.collected = true; gameState.coins++; updateUI();
-                    spawnParticles(el.x + el.w/2, el.y + el.h/2, "#ffcc00", 8); saveGame();
-                }
-                if (el.type === "goal") this.completeLevel();
-            }
-        });
-    },
-
-    die() {
-        if (this.isDead) return;
-        this.isDead = true; this.deathTimer = 25;
-        spawnParticles(this.x + this.w/2, this.y + this.h/2, "#eb5e55", 12);
-        gameState.attempts++; updateUI(); saveGame();
-    },
-
-    respawn() {
-        this.isDead = false;
-        const currentLvl = levels[gameState.level];
-        this.x = currentLvl.start.x; this.y = currentLvl.start.y;
-        this.vx = 0; this.vy = 0; this.squashX = 1; this.squashY = 1;
-    },
-
-    completeLevel() {
-        if (gameState.level < levels.length - 1) {
-            gameState.level++; updateUI(); saveGame(); this.respawn();
-        } else {
-            alert(`🎉 أسطورة! لقد ختمت جميع المستويات الـ 12 بمحاولات إجمالية: ${gameState.attempts}!`);
-            gameState.level = 0; gameState.attempts = 1; updateUI(); saveGame(); this.respawn();
-        }
-    },
-
-    draw() {
-        ctx.save();
-        ctx.translate(this.x + this.w / 2, this.y + this.h / 2);
-        ctx.scale(this.squashX, this.squashY);
-        ctx.fillStyle = this.isDead ? "#95a5a6" : gameState.skinColor;
-        ctx.fillRect(-this.w / 2, -this.h / 2, this.w, this.h);
-        
-        let eyeOffsetY = -3, eyeDir = this.vx > 0.3 ? 2 : (this.vx < -0.3 ? -2 : 0);
-        if (this.isDead) {
-            ctx.strokeStyle = "#fff"; ctx.lineWidth = 2;
-            ctx.beginPath(); ctx.moveTo(-6+eyeDir, eyeOffsetY-2); ctx.lineTo(-2+eyeDir, eyeOffsetY+2); ctx.moveTo(-2+eyeDir, eyeOffsetY-2); ctx.lineTo(-6+eyeDir, eyeOffsetY+2); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(2+eyeDir, eyeOffsetY-2); ctx.lineTo(6+eyeDir, eyeOffsetY+2); ctx.moveTo(6+eyeDir, eyeOffsetY-2); ctx.lineTo(2+eyeDir, eyeOffsetY+2); ctx.stroke();
-        } else if (this.isBlinking) {
-            ctx.fillStyle = "#fff"; ctx.fillRect(-7 + eyeDir, eyeOffsetY, 4, 2); ctx.fillRect(3 + eyeDir, eyeOffsetY, 4, 2);
-        } else {
-            ctx.fillStyle = "#ffffff"; ctx.fillRect(-7 + eyeDir, eyeOffsetY, 4, 4); ctx.fillRect(3 + eyeDir, eyeOffsetY, 4, 4);
-        }
-        ctx.restore();
-    }
-};
-
-// المستويات الـ 12 المتدرجة
-const levels = [
-    { start: { x: 50, y: 350 }, elements: [{ type: "ground", x: 0, y: 420, w: 300, h: 60 }, { type: "spike", x: 300, y: 435, w: 30, h: 15 }, { type: "ground", x: 330, y: 390, w: 200, h: 90 }, { type: "coin", x: 420, y: 320, w: 16, h: 16, collected: false }, { type: "ground", x: 620, y: 420, w: 230, h: 60 }, { type: "goal", x: 740, y: 360, w: 30, h: 60 }] },
-    { start: { x: 50, y: 350 }, elements: [{ type: "ground", x: 0, y: 420, w: 200, h: 60 }, { type: "moving", x: 250, y: 340, w: 80, h: 15, startX: 230, endX: 420, vx: 2 }, { type: "ground", x: 480, y: 350, w: 100, h: 130 }, { type: "coin", x: 520, y: 280, w: 16, h: 16, collected: false }, { type: "ground", x: 670, y: 420, w: 180, h: 60 }, { type: "goal", x: 760, y: 360, w: 30, h: 60 }] },
-    { start: { x: 50, y: 350 }, elements: [{ type: "ground", x: 0, y: 420, w: 150, h: 60 }, { type: "disappearing", x: 240, y: 340, w: 60, h: 15, timer: 0 }, { type: "disappearing", x: 380, y: 280, w: 60, h: 15, timer: 30 }, { type: "ground", x: 520, y: 280, w: 100, h: 200 }, { type: "spike", x: 520, y: 265, w: 30, h: 15 }, { type: "coin", x: 400, y: 220, w: 16, h: 16, collected: false }, { type: "ground", x: 700, y: 400, w: 150, h: 80 }, { type: "goal", x: 760, y: 340, w: 30, h: 60 }] },
-    { start: { x: 50, y: 400 }, elements: [{ type: "ground", x: 0, y: 440, w: 150, h: 40 }, { type: "wall", x: 260, y: 180, w: 30, h: 300 }, { type: "spike", x: 150, y: 455, w: 110, h: 15 }, { type: "ground", x: 400, y: 350, w: 120, h: 130 }, { type: "coin", x: 275, y: 140, w: 16, h: 16, collected: false }, { type: "ground", x: 620, y: 420, w: 230, h: 60 }, { type: "goal", x: 740, y: 360, w: 30, h: 60 }] },
-    { start: { x: 40, y: 300 }, elements: [{ type: "ground", x: 0, y: 380, w: 100, h: 100 }, { type: "spike", x: 100, y: 465, w: 400, h: 15 }, { type: "moving", x: 150, y: 280, w: 70, h: 15, startX: 140, endX: 450, vx: 3 }, { type: "coin", x: 300, y: 190, w: 16, h: 16, collected: false }, { type: "ground", x: 550, y: 350, w: 300, h: 130 }, { type: "goal", x: 700, y: 290, w: 30, h: 60 }] },
-    { start: { x: 50, y: 400 }, elements: [{ type: "ground", x: 0, y: 440, w: 120, h: 40 }, { type: "wall", x: 220, y: 220, w: 30, h: 260 }, { type: "wall", x: 360, y: 100, w: 30, h: 280 }, { type: "spike", x: 120, y: 455, w: 240, h: 15 }, { type: "ground", x: 500, y: 300, w: 350, h: 180 }, { type: "coin", x: 300, y: 160, w: 16, h: 16, collected: false }, { type: "goal", x: 650, y: 240, w: 30, h: 60 }] },
-    { start: { x: 50, y: 300 }, elements: [{ type: "ground", x: 0, y: 400, w: 100, h: 80 }, { type: "disappearing", x: 180, y: 350, w: 50, h: 15, timer: 0 }, { type: "spike", x: 280, y: 435, w: 30, h: 15 }, { type: "ground", x: 260, y: 450, w: 80, h: 30 }, { type: "disappearing", x: 390, y: 350, w: 50, h: 15, timer: 35 }, { type: "ground", x: 520, y: 300, w: 100, h: 180 }, { type: "coin", x: 310, y: 390, w: 16, h: 16, collected: false }, { type: "ground", x: 700, y: 400, w: 150, h: 80 }, { type: "goal", x: 770, y: 340, w: 30, h: 60 }] },
-    { start: { x: 50, y: 200 }, elements: [{ type: "ground", x: 0, y: 260, w: 120, h: 220 }, { type: "moving", x: 180, y: 260, w: 60, h: 15, startX: 180, endX: 180, vx: 0, timer: 0 }, { type: "ground", x: 300, y: 380, w: 100, h: 100 }, { type: "spike", x: 300, y: 365, w: 40, h: 15 }, { type: "moving", x: 460, y: 300, w: 80, h: 15, startX: 450, endX: 620, vx: 2.5 }, { type: "coin", x: 350, y: 300, w: 16, h: 16, collected: false }, { type: "ground", x: 700, y: 320, w: 150, h: 160 }, { type: "goal", x: 770, y: 260, w: 30, h: 60 }] },
-    { start: { x: 50, y: 400 }, elements: [{ type: "ground", x: 0, y: 440, w: 150, h: 40 }, { type: "wall", x: 240, y: 200, w: 25, h: 240 }, { type: "wall", x: 360, y: 100, w: 25, h: 260 }, { type: "wall", x: 480, y: 200, w: 25, h: 240 }, { type: "spike", x: 150, y: 455, w: 400, h: 15 }, { type: "coin", x: 420, y: 150, w: 16, h: 16, collected: false }, { type: "ground", x: 600, y: 400, w: 250, h: 80 }, { type: "goal", x: 720, y: 340, w: 30, h: 60 }] },
-    { start: { x: 40, y: 350 }, elements: [{ type: "ground", x: 0, y: 420, w: 100, h: 60 }, { type: "disappearing", x: 160, y: 360, w: 45, h: 15, timer: 10 }, { type: "disappearing", x: 260, y: 300, w: 45, h: 15, timer: 25 }, { type: "disappearing", x: 360, y: 240, w: 45, h: 15, timer: 40 }, { type: "disappearing", x: 460, y: 180, w: 45, h: 15, timer: 55 }, { type: "ground", x: 580, y: 240, w: 80, h: 240 }, { type: "spike", x: 580, y: 225, w: 30, h: 15 }, { type: "coin", x: 380, y: 160, w: 16, h: 16, collected: false }, { type: "ground", x: 720, y: 380, w: 150, h: 100 }, { type: "goal", x: 780, y: 320, w: 30, h: 60 }] },
-    { start: { x: 50, y: 350 }, elements: [{ type: "ground", x: 0, y: 420, w: 120, h: 60 }, { type: "spike", x: 120, y: 435, w: 30, h: 15 }, { type: "ground", x: 150, y: 420, w: 60, h: 60 }, { type: "moving", x: 260, y: 330, w: 70, h: 15, startX: 250, endX: 420, vx: 3.2 }, { type: "wall", x: 510, y: 160, w: 30, h: 320 }, { type: "spike", x: 210, y: 465, w: 300, h: 15 }, { type: "coin", x: 480, y: 250, w: 16, h: 16, collected: false }, { type: "ground", x: 660, y: 360, w: 200, h: 120 }, { type: "goal", x: 760, y: 300, w: 30, h: 60 }] },
-    { start: { x: 40, y: 400 }, elements: [{ type: "ground", x: 0, y: 450, w: 100, h: 30 }, { type: "spike", x: 100, y: 465, w: 600, h: 15 }, { type: "wall", x: 160, y: 240, w: 25, h: 140 }, { type: "disappearing", x: 240, y: 200, w: 50, h: 15, timer: 5 }, { type: "moving", x: 340, y: 160, w: 70, h: 15, startX: 330, endX: 500, vx: 2.8 }, { type: "wall", x: 560, y: 120, w: 25, h: 220 }, { type: "coin", x: 380, y: 80, w: 16, h: 16, collected: false }, { type: "disappearing", x: 640, y: 260, w: 50, h: 15, timer: 30 }, { type: "ground", x: 730, y: 350, w: 120, h: 130 }, { type: "goal", x: 770, y: 290, w: 30, h: 60 }] }
-];
-
-function update() {
-    player.update();
-    particles.forEach((p, idx) => { p.x += p.vx; p.y += p.vy; p.alpha -= 0.03; if (p.alpha <= 0) particles.splice(idx, 1); });
-
-    const currentLvl = levels[gameState.level];
-    currentLvl.elements.forEach(el => {
-        if (el.type === "moving") { el.x += el.vx; if (el.x > el.endX || el.x < el.startX) el.vx *= -1; }
-        if (el.type === "disappearing") { el.timer = (el.timer + 1) % 70; }
-    });
-}
-
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const currentLvl = levels[gameState.level];
-    
-    currentLvl.elements.forEach(el => {
-        if (el.type === "ground" || el.type === "wall") { ctx.fillStyle = "#fca590"; ctx.fillRect(el.x, el.y, el.w, el.h); } 
-        else if (el.type === "moving") { ctx.fillStyle = "#eb5e55"; ctx.fillRect(el.x, el.y, el.w, el.h); }
-        else if (el.type === "disappearing") {
-            if (el.timer <= 35) { ctx.fillStyle = "rgba(235, 94, 85, 0.9)"; ctx.fillRect(el.x, el.y, el.w, el.h); } 
-            else if (el.timer <= 46) { ctx.fillStyle = "rgba(235, 94, 85, 0.25)"; ctx.fillRect(el.x, el.y, el.w, el.h); }
-        }
-        else if (el.type === "spike") {
-            ctx.fillStyle = "#eb5e55"; ctx.beginPath(); ctx.moveTo(el.x, el.y + el.h); ctx.lineTo(el.x + el.w / 2, el.y); ctx.lineTo(el.x + el.w, el.y + el.h); ctx.fill();
-        } 
-        else if (el.type === "coin" && !el.collected) {
-            ctx.fillStyle = "#ffcc00"; ctx.beginPath(); ctx.arc(el.x + el.w/2, el.y + el.h/2, el.w/2, 0, Math.PI * 2); ctx.fill();
-        } 
-        else if (el.type === "goal") {
-            ctx.fillStyle = "#eb5e55"; ctx.fillRect(el.x, el.y, 4, el.h); 
-            ctx.fillStyle = "#ffcc00"; ctx.beginPath(); ctx.moveTo(el.x + 4, el.y); ctx.lineTo(el.x + 24, el.y + 12); ctx.lineTo(el.x + 4, el.y + 24); ctx.fill();
-        }
-    });
-
-    player.draw();
-    particles.forEach(p => { ctx.save(); ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill(); ctx.restore(); });
-}
-
-function gameLoop() { update(); draw(); requestAnimationFrame(gameLoop); }
-
-player.respawn();
-gameLoop();
 </script>
+
 </body>
 </html>
