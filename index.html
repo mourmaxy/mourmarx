@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>mourmar</title>
 <style>
   /* Fonts & Colors */
@@ -26,8 +26,8 @@
 
   header {
     background-color: rgba(255 255 255 / 0.1);
-    padding: 20px 30px;
-    font-size: 24px;
+    padding: 15px 20px;
+    font-size: 22px;
     font-weight: 700;
     letter-spacing: 2px;
     user-select: none;
@@ -45,7 +45,7 @@
   main {
     flex: 1;
     display: flex;
-    height: calc(100vh - 72px);
+    height: calc(100vh - 65px);
     overflow: hidden;
     flex-direction: row;
     border-radius: 10px;
@@ -76,11 +76,11 @@
     background-color: #283d59;
     color: #e0e0e0;
     border: 2px solid #406a99;
-    margin-bottom: 18px;
-    padding: 15px;
+    margin-bottom: 15px;
+    padding: 12px;
     resize: none;
     font-family: 'Courier New', Courier, monospace;
-    font-size: 15px;
+    font-size: 14px;
     border-radius: 12px;
     box-shadow: 0 0 15px #1a3351 inset;
     transition: border-color 0.3s ease;
@@ -96,8 +96,8 @@
     background-color: #ff9800;
     color: white;
     border: none;
-    padding: 15px 0;
-    font-size: 18px;
+    padding: 12px 0;
+    font-size: 16px;
     font-weight: 700;
     cursor: pointer;
     border-radius: 30px;
@@ -139,7 +139,7 @@
 
   /* Webkit Scrollbar */
   .editor-section textarea::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
   }
   .editor-section textarea::-webkit-scrollbar-track {
     background: #1a2a41;
@@ -148,6 +148,46 @@
   .editor-section textarea::-webkit-scrollbar-thumb {
     background-color: #ff9800;
     border-radius: 8px;
+  }
+
+  /* 📱 تعديلات الهواتف والشاشات الصغيرة (Media Queries) */
+  @media (max-width: 768px) {
+    body {
+      overflow: auto; /* السماح بالتمرير لصفحة الهاتف إذا لزم الأمر */
+    }
+
+    main {
+      flex-direction: column; /* تحويل الترتيب إلى عمودي */
+      height: auto;
+      min-height: calc(100vh - 90px);
+      margin: 10px;
+    }
+
+    .editor-section {
+      flex-basis: auto;
+      height: 450px; /* تحديد طول مناسب لقسم كتابة الأكواد */
+      padding: 15px;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .editor-section textarea {
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    #dragbar {
+      display: none; /* إخفاء شريط السحب على الهواتف لأنه غير عملي باللمس */
+    }
+
+    .result-section {
+      height: 400px; /* تحديد طول مناسب لعرض النتيجة */
+      border-radius: 0 0 10px 10px;
+    }
+    
+    header {
+      padding: 10px 15px;
+      font-size: 18px;
+    }
   }
 </style>
 </head>
@@ -188,6 +228,7 @@
     document.getElementById("output").srcdoc = output;
   }
 
+  // التحكم في السحب (يعمل فقط على الشاشات الكبيرة)
   const dragbar = document.getElementById('dragbar');
   const editor = document.getElementById('editor');
   const main = document.getElementById('mainContainer');
@@ -208,6 +249,9 @@
 
   document.addEventListener('mousemove', function(e) {
     if (!isDragging) return;
+    // التأكد من أن الميزة لا تعمل إذا تحول التصميم لوضع الهاتف
+    if (window.innerWidth <= 768) return; 
+
     let pointerRelativeXpos = e.clientX - main.getBoundingClientRect().left;
     let minWidth = main.clientWidth * 0.15;
     let maxWidth = main.clientWidth * 0.85;
