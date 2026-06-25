@@ -1,286 +1,222 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MOURMAR</title>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>mourmar</title>
 <style>
-/* Reset & Base */
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
+  /* Fonts & Colors */
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
 
-body {
-    background: #f8f9fa;
-    color: #212529;
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #e0e0e0;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-}
+    direction: ltr;
+    overflow: hidden;
+  }
 
-/* HEADER */
-header {
+  header {
+    background-color: rgba(255 255 255 / 0.1);
+    padding: 20px 30px;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    user-select: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
-    background: white;
-    border-bottom: 2px solid #c8ab82;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
+    color: #f0f0f0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+  }
 
-/* تصميم الاسم النصي بطريقة جميلة وراقية بدلاً من الشعار */
-.logo-text {
-    font-size: 24px;
-    font-weight: 900;
-    color: #1a1a1a;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    position: relative;
-    display: inline-block;
-}
+  #siteTitle {
+    user-select: text;
+  }
 
-.logo-text::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 40%;
-    height: 3px;
-    background-color: #c8ab82; /* خط ذهبي صغير يضفي جمالية تحت الاسم */
-    border-radius: 2px;
-}
-
-.menu {
-    display: flex;
-    gap: 8px;
-}
-
-.menu button {
-    background: #1a1a1a;
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.menu button.active {
-    background: #c8ab82;
-    color: white;
-}
-
-/* HERO SECTION */
-.hero {
-    text-align: center;
-    padding: 30px 16px 20px 16px;
-    background: white;
-}
-
-.hero h1 {
-    font-size: 32px;
-    font-weight: 800;
-    color: #1a1a1a;
-    margin-bottom: 6px;
-}
-
-.hero p {
-    color: #6c757d;
-    font-size: 14px;
-}
-
-/* MAIN CONTENT */
-#content {
+  main {
     flex: 1;
-    padding: 16px;
+    display: flex;
+    height: calc(100vh - 72px);
+    overflow: hidden;
+    flex-direction: row;
+    border-radius: 10px;
+    margin: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+    background-color: #152f4a;
+  }
+
+  .editor-section, .result-section {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-}
+    overflow: hidden;
+  }
 
-/* NEWS CARD */
-.news {
-    width: 100%;
-    max-width: 650px;
+  .editor-section {
+    background-color: #1e2f44;
+    flex-basis: 50%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: 20px 25px;
+    border-radius: 10px 0 0 10px;
+    box-shadow: inset 0 0 15px #0a1c2f;
+  }
+
+  .editor-section textarea {
+    flex: 1;
+    background-color: #283d59;
+    color: #e0e0e0;
+    border: 2px solid #406a99;
+    margin-bottom: 18px;
+    padding: 15px;
+    resize: none;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #1a3351 inset;
+    transition: border-color 0.3s ease;
+  }
+  
+  .editor-section textarea:focus {
+    outline: none;
+    border-color: #ff9800;
+    box-shadow: 0 0 20px #ff9800 inset;
+  }
+
+  button.run-btn {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(255,152,0,0.7);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  button.run-btn:hover {
+    background-color: #e68900;
+    box-shadow: 0 8px 25px rgba(230,137,0,0.9);
+  }
+
+  .result-section {
     background: white;
-    border-radius: 16px;
+    flex-grow: 1;
+    border-radius: 0 10px 10px 0;
     overflow: hidden;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-    border: 1px solid #eef0f2;
-    margin-bottom: 16px;
-}
+    box-shadow: 0 0 25px rgba(0,0,0,0.3);
+  }
 
-.news-image-container {
-    width: 100%;
-    height: 220px;
-    background: #f1f3f5;
-    overflow: hidden;
-}
-
-.news-image-container img {
+  iframe {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    display: block;
-}
+    border: none;
+  }
 
-/* تنسيق المحتوى العربي */
-.news-content {
-    padding: 20px;
-    direction: rtl;
-    text-align: right;
-}
+  #dragbar {
+    width: 8px;
+    background-color: #ff9800;
+    cursor: col-resize;
+    user-select: none;
+    box-shadow: 0 0 8px #ff9800;
+    transition: background-color 0.3s ease;
+  }
+  
+  #dragbar:hover {
+    background-color: #ffa726;
+  }
 
-.news-content h2 {
-    font-size: 22px;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 16px;
-    line-height: 1.5;
-    border-bottom: 2px solid #f1f3f5;
-    padding-bottom: 10px;
-}
-
-.news-content p {
-    font-size: 15px;
-    color: #343a40;
-    line-height: 1.9;
-    margin-bottom: 12px;
-}
-
-/* OLD NEWS */
-.old {
-    text-align: center;
-    padding: 60px 16px;
-    font-size: 16px;
-    color: #6c757d;
-}
-
-/* FOOTER */
-footer {
-    padding: 16px;
-    text-align: center;
-    background: #1a1a1a;
-    color: #adb5bd;
-    font-size: 12px;
-    margin-top: auto;
-}
-
-/* تحسينات الشاشات الأكبر */
-@media (min-width: 768px) {
-    header { padding: 15px 40px; }
-    .logo-text { font-size: 28px; }
-    .menu button { padding: 10px 20px; font-size: 14px; }
-    .hero { padding: 50px 20px 30px 20px; }
-    .hero h1 { font-size: 42px; }
-    .hero p { font-size: 16px; }
-    .news-image-container { height: 300px; }
-    .news-content { padding: 30px; }
-    .news-content h2 { font-size: 26px; }
-    .news-content p { font-size: 16.5px; }
-}
+  /* Webkit Scrollbar */
+  .editor-section textarea::-webkit-scrollbar {
+    width: 8px;
+  }
+  .editor-section textarea::-webkit-scrollbar-track {
+    background: #1a2a41;
+    border-radius: 8px;
+  }
+  .editor-section textarea::-webkit-scrollbar-thumb {
+    background-color: #ff9800;
+    border-radius: 8px;
+  }
 </style>
 </head>
-
 <body>
 
-<header>
-    <div class="logo-text">MOURMAR</div>
+  <header>
+    <div id="siteTitle">mourmar</div>
+  </header>
 
-    <div class="menu">
-        <button id="btn-actu" class="active" onclick="actualites()">Actualités</button>
-        <button id="btn-anciennes" onclick="anciennes()">Anciennes</button>
+  <main id="mainContainer">
+    <div class="editor-section" id="editor">
+      <textarea id="htmlCode" placeholder="HTML Code"></textarea>
+      <textarea id="cssCode" placeholder="CSS Code"></textarea>
+      <textarea id="jsCode" placeholder="JavaScript Code"></textarea>
+      <button class="run-btn" onclick="runCode()">Run Code</button>
     </div>
-</header>
 
-<div class="hero">
-    <h1 id="hero-title">MOURMAR</h1>
-    <p id="hero-subtitle">Les dernières actualités.</p>
-</div>
+    <div id="dragbar"></div>
 
-<main id="content">
-    <div class="news">
-        <div class="news-image-container">
-            <img src="https://tse3.mm.bing.net/th/id/OIP.e2qspeV-QgLKJ0hNFeiT5QHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Image de l'actualité">
-        </div>
-        <div class="news-content">
-            <h2>تجربتي مع مؤسسة أجيال</h2>
-            <p>
-                أكتب هذا المقال انطلاقًا من تجربتي الشخصية خلال السنوات التي قضيتها في مؤسسة أجيال في المرحلة الابتدائية. ورغم أن هذه التجربة أصبحت جزءًا من الماضي، فإن آثارها ما زالت عالقة في ذاكرتي إلى اليوم.
-            </p>
-            <p>
-                عندما التحقت بالمؤسسة كنت طفلًا صغيرًا، أذهب إلى المدرسة بهدف التعلم واكتشاف أشياء جديدة، لكن مع مرور السنوات بدأت أشعر بأن الدراسة لم تعد مجرد وسيلة للتعلم، بل أصبحت مصدرًا للضغط والقلق المستمر. كان التركيز الكبير على النتائج والنقاط يجعلني أشعر أحيانًا بأن قيمة التلميذ تُقاس بما يحصل عليه من معدلات أكثر مما تُقاس بجهوده أو شخصيته.
-            </p>
-            <p>
-                كنت ألاحظ وجود اهتمام أكبر بالتلاميذ المتفوقين، بينما كان التلاميذ الذين يواجهون صعوبات دراسية يحصلون على اهتمام أقل. وقد جعلني هذا الأمر أشعر في بعض الفترات بالإحباط وفقدان الثقة بالنفس، لأن الطفل في ذلك العمر يحتاج إلى التشجيع والدعم أكثر من حاجته إلى المقارنة بالآخرين.
-            </p>
-            <p>
-                لا أنكر أن المستوى الدراسي كان مقبولًا إلى حد ما، وقد استفدت من بعض المعارف التي تعلمتها هناك، لكن المشكلة بالنسبة لي لم تكن في التعليم نفسه، بل في الجو النفسي الذي رافق تلك السنوات. فقد كنت أشعر أحيانًا بالخوف من ارتكاب الأخطاء أو من الحصول على نتائج لا ترقى إلى التوقعات، وهو ما جعل المدرسة تتحول بالنسبة لي من مكان للتعلم إلى مصدر للتوتر والضغط.
-            </p>
-            <p>
-                ومع مرور الوقت، بدأت هذه التجربة تؤثر على حالتي النفسية وثقتي بنفسي. فبدل أن أعيش طفولتي الدراسية بشكل طبيعي، كنت أشعر بعبء كبير لا يتناسب مع سني آنذاك. وربما لهذا السبب أعتبر المرحلة الابتدائية أصعب مرحلة دراسية مررت بها، رغم أنها كانت من المفترض أن تكون من أجمل مراحل الطفولة.
-            </p>
-            <p>
-                وعندما انتقلت إلى المرحلتين الإعدادية والثانوية، لاحظت فرقًا كبيرًا في تجربتي الدراسية. فقد وجدت بيئة أكثر راحة وتفهمًا، وشعرت بأنني قادر على التعلم والتطور دون ذلك القدر من الضغط الذي كنت أعيشه سابقًا. ولهذا كانت تجربتي في الإعدادي والثانوي أفضل بكثير من تجربتي في المرحلة الابتدائية.
-            </p>
-            <p>
-                في النهاية، يبقى هذا المقال مجرد وصف لتجربتي الشخصية ورأيي الخاص، وقد تكون تجارب الآخرين مختلفة. لكن بالنسبة لي، كانت سنوات الابتدائي في هذه المؤسسة من أكثر الفترات الدراسية التي تركت أثرًا نفسيًا واضحًا في حياتي، وساهمت في تشكيل نظرتي إلى التعليم وأهمية الاهتمام بالجانب النفسي للتلميذ إلى جانب مستواه الدراسي.
-            </p>
-        </div>
+    <div class="result-section">
+      <iframe id="output"></iframe>
     </div>
-</main>
-
-<footer>
-    &copy; 2026 MOURMAR. Tous droits réservés.
-</footer>
+  </main>
 
 <script>
-const articleHTML = `
-    <div class="news">
-        <div class="news-image-container">
-            <img src="https://tse3.mm.bing.net/th/id/OIP.e2qspeV-QgLKJ0hNFeiT5QHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Image de l'actualité">
-        </div>
-        <div class="news-content">
-            <h2>تجربتي مع مؤسسة أجيال</h2>
-            <p>أكتب هذا المقال انطلاقًا من تجربتي الشخصية خلال السنوات التي قضيتها في مؤسسة أجيال في المرحلة الابتدائية. ورغم أن هذه التجربة أصبحت جزءًا من الماضي، فإن آثارها ما زالت عالقة في ذاكرتي إلى اليوم.</p>
-            <p>عندما التحقت بالمؤسسة كنت طفلًا صغيرًا، أذهب إلى المدرسة بهدف التعلم واكتشاف أشياء جديدة، لكن مع مرور السنوات بدأت أشعر بأن الدراسة لم تعد مجرد وسيلة للتعلم، بل أصبحت مصدرًا للضغط والقلق المستمر. كان التركيز الكبير على النتائج والنقاط يجعلني أشعر أحيانًا بأن قيمة التلميذ تُقاس بما يحصل عليه من معدلات أكثر مما تُقاس بجهوده أو شخصيته.</p>
-            <p>كنت ألاحظ وجود اهتمام أكبر بالتلاميذ المتفوقين، بينما كان التلاميذ الذين يواجهون صعوبات دراسية يحصلون على اهتمام أقل. وقد جعلني هذا الأمر أشعر في بعض الفترات بالإحباط وفقدان الثقة بالنفس، لأن الطفل في ذلك العمر يحتاج إلى التشجيع والدعم أكثر من حاجته إلى المقارنة بالآخرين.</p>
-            <p>لا أنكر أن المستوى الدراسي كان مقبولًا إلى حد ما، وقد استفدت من بعض المعارف التي تعلمتها هناك، لكن المشكلة بالنسبة لي لم تكن في التعليم نفسه، بل في الجو النفسي الذي رافق تلك السنوات. فقد كنت أشعر أحيانًا بالخوف من ارتكاب الأخطاء أو من الحصول على نتائج لا ترقى إلى التوقعات، وهو ما جعل المدرسة تتحول بالنسبة لي من مكان للتعلم إلى مصدر للتوتر والضغط.</p>
-            <p>ومع مرور الوقت، بدأت هذه التجربة تؤثر على حالتي النفسية وثقتي بنفسي. فبدل أن أعيش طفولتي الدراسية بشكل طبيعي، كنت أشعر بعبء كبير لا يتناسب مع سني آنذاك. وربما لهذا السبب أعتبر المرحلة الابتدائية أصعب مرحلة دراسية مررت بها، رغم أنها كانت من المفترض أن تكون من أجمل مراحل الطفولة.</p>
-            <p>عندما انتقلت إلى المرحلتين الإعدادية والثانوية، لاحظت فرقًا كبيرًا في تجربتي الدراسية. فقد وجدت بيئة أكثر راحة وتفهمًا، وشعرت بأنني قادر على التعلم والتطور دون ذلك القدر من الضغط الذي كنت أعيشه سابقًا. ولهذا كانت تجربتي في الإعدادي والثانوي أفضل بكثير من تجربتي في المرحلة الابتدائية.</p>
-            <p>في النهاية، يبقى هذا المقال مجرد وصف لتجربتي الشخصية ورأيي الخاص، وقد تكون تجارب الآخرين مختلفة. لكن بالنسبة لي، كانت سنوات الابتدائي في هذه المؤسسة من أكثر الفترات الدراسية التي تركت أثرًا نفسيًا واضحًا في حياتي، وساهمت في تشكيل نظرتي إلى التعليم وأهمية الاهتمام بالجانب النفسي للتلميذ إلى جانب مستواه الدراسي.</p>
-        </div>
-    </div>
-`;
+  function runCode() {
+    const html = document.getElementById("htmlCode").value;
+    const css = document.getElementById("cssCode").value;
+    const js = document.getElementById("jsCode").value;
 
-function actualites(){
-    document.getElementById("btn-actu").classList.add("active");
-    document.getElementById("btn-anciennes").classList.remove("active");
-    document.getElementById("hero-subtitle").innerText = "Les dernières actualités.";
-    document.getElementById("content").innerHTML = articleHTML;
-}
-
-function anciennes(){
-    document.getElementById("btn-actu").classList.remove("active");
-    document.getElementById("btn-anciennes").classList.add("active");
-    document.getElementById("hero-subtitle").innerText = "Archives et anciens articles.";
-    document.getElementById("content").innerHTML = `
-        <div class="old">
-            Aucune ancienne actualité disponible pour le moment.
-        </div>
+    const output = `
+      <html>
+        <head><style>${css}</style></head>
+        <body>${html}<script>${js}<\/script></body>
+      </html>
     `;
-}
+
+    document.getElementById("output").srcdoc = output;
+  }
+
+  const dragbar = document.getElementById('dragbar');
+  const editor = document.getElementById('editor');
+  const main = document.getElementById('mainContainer');
+
+  let isDragging = false;
+
+  dragbar.addEventListener('mousedown', function(e) {
+    isDragging = true;
+    document.body.style.cursor = 'col-resize';
+  });
+
+  document.addEventListener('mouseup', function(e) {
+    if (isDragging) {
+      isDragging = false;
+      document.body.style.cursor = 'default';
+    }
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    if (!isDragging) return;
+    let pointerRelativeXpos = e.clientX - main.getBoundingClientRect().left;
+    let minWidth = main.clientWidth * 0.15;
+    let maxWidth = main.clientWidth * 0.85;
+
+    if (pointerRelativeXpos < minWidth) pointerRelativeXpos = minWidth;
+    if (pointerRelativeXpos > maxWidth) pointerRelativeXpos = maxWidth;
+
+    editor.style.flexBasis = pointerRelativeXpos + 'px';
+  });
 </script>
 
 </body>
