@@ -1,267 +1,174 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>mourmar</title>
-<style>
-  /* Fonts & Colors */
-  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب جديد</title>
+    <style>
+        /* إعدادات التصميم الحديث المظلم */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-  * {
-    box-sizing: border-box;
-  }
+        body {
+            background-color: #0a0a0a; /* أسود داكن حديث */
+            color: #ffffff; /* نصوص بيضاء */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 80px 20px;
+        }
 
-  body {
-    margin: 0;
-    font-family: 'Cairo', sans-serif;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: #e0e0e0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    direction: ltr;
-    overflow: hidden;
-  }
+        /* حاوية ممتدة وأنيقة */
+        .signup-container {
+            max-width: 550px;
+            width: 100%;
+        }
 
-  header {
-    background-color: rgba(255 255 255 / 0.1);
-    padding: 15px 20px;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    user-select: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #f0f0f0;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
-  }
+        .signup-container h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+        }
 
-  #siteTitle {
-    user-select: text;
-  }
+        .signup-container p {
+            color: #888888; /* رمادي خفيف للمظهر الحديث */
+            font-size: 1rem;
+            margin-bottom: 40px;
+        }
 
-  main {
-    flex: 1;
-    display: flex;
-    height: calc(100vh - 65px);
-    overflow: hidden;
-    flex-direction: row;
-    border-radius: 10px;
-    margin: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-    background-color: #152f4a;
-  }
+        /* تنسيق الحقول الحديثة */
+        .input-group {
+            margin-bottom: 25px;
+        }
 
-  .editor-section, .result-section {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
 
-  .editor-section {
-    background-color: #1e2f44;
-    flex-basis: 50%;
-    flex-grow: 0;
-    flex-shrink: 0;
-    padding: 20px 25px;
-    border-radius: 10px 0 0 10px;
-    box-shadow: inset 0 0 15px #0a1c2f;
-  }
+        .input-group input[type="text"],
+        .input-group input[type="email"],
+        .input-group input[type="password"],
+        .input-group input[type="date"] {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #222222; /* إطار داكن مدمج */
+            background-color: #121212; /* خلفية الحقل أسود خفيف */
+            color: #ffffff;
+            font-size: 0.95rem;
+            border-radius: 8px; /* حواف دائرية ناعمة */
+            outline: none;
+            transition: all 0.3s ease;
+        }
 
-  .editor-section textarea {
-    flex: 1;
-    background-color: #283d59;
-    color: #e0e0e0;
-    border: 2px solid #406a99;
-    margin-bottom: 15px;
-    padding: 12px;
-    resize: none;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 14px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px #1a3351 inset;
-    transition: border-color 0.3s ease;
-  }
-  
-  .editor-section textarea:focus {
-    outline: none;
-    border-color: #ff9800;
-    box-shadow: 0 0 20px #ff9800 inset;
-  }
+        /* تأثير التوهج الأبيض الحديث عند التركيز */
+        .input-group input:focus {
+            border-color: #ffffff;
+            background-color: #161616;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+        }
 
-  button.run-btn {
-    background-color: #ff9800;
-    color: white;
-    border: none;
-    padding: 12px 0;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    border-radius: 30px;
-    box-shadow: 0 5px 15px rgba(255,152,0,0.7);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  }
+        /* خيارات الجنس */
+        .gender-options {
+            display: flex;
+            gap: 30px;
+            margin-top: 10px;
+        }
 
-  button.run-btn:hover {
-    background-color: #e68900;
-    box-shadow: 0 8px 25px rgba(230,137,0,0.9);
-  }
+        .gender-options label {
+            font-weight: normal;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffffff;
+        }
 
-  .result-section {
-    background: white;
-    flex-grow: 1;
-    border-radius: 0 10px 10px 0;
-    overflow: hidden;
-    box-shadow: 0 0 25px rgba(0,0,0,0.3);
-  }
+        .gender-options input[type="radio"] {
+            accent-color: #ffffff; /* خيار الراديو باللون الأبيض */
+            width: 18px;
+            height: 18px;
+        }
 
-  iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
+        /* زر التسجيل الأبيض المتطور */
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            letter-spacing: 0.5px;
+        }
 
-  #dragbar {
-    width: 8px;
-    background-color: #ff9800;
-    cursor: col-resize;
-    user-select: none;
-    box-shadow: 0 0 8px #ff9800;
-    transition: background-color 0.3s ease;
-  }
-  
-  #dragbar:hover {
-    background-color: #ffa726;
-  }
+        .btn-submit:hover {
+            background-color: #e5e5e5;
+            transform: translateY(-2px); /* تأثير ارتفاع بسيط وجذاب */
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+        }
 
-  /* Webkit Scrollbar */
-  .editor-section textarea::-webkit-scrollbar {
-    width: 6px;
-  }
-  .editor-section textarea::-webkit-scrollbar-track {
-    background: #1a2a41;
-    border-radius: 8px;
-  }
-  .editor-section textarea::-webkit-scrollbar-thumb {
-    background-color: #ff9800;
-    border-radius: 8px;
-  }
-
-  /* 📱 تعديلات الهواتف والشاشات الصغيرة (Media Queries) */
-  @media (max-width: 768px) {
-    body {
-      overflow: auto; /* السماح بالتمرير لصفحة الهاتف إذا لزم الأمر */
-    }
-
-    main {
-      flex-direction: column; /* تحويل الترتيب إلى عمودي */
-      height: auto;
-      min-height: calc(100vh - 90px);
-      margin: 10px;
-    }
-
-    .editor-section {
-      flex-basis: auto;
-      height: 450px; /* تحديد طول مناسب لقسم كتابة الأكواد */
-      padding: 15px;
-      border-radius: 10px 10px 0 0;
-    }
-
-    .editor-section textarea {
-      font-size: 13px;
-      margin-bottom: 10px;
-    }
-
-    #dragbar {
-      display: none; /* إخفاء شريط السحب على الهواتف لأنه غير عملي باللمس */
-    }
-
-    .result-section {
-      height: 400px; /* تحديد طول مناسب لعرض النتيجة */
-      border-radius: 0 0 10px 10px;
-    }
-    
-    header {
-      padding: 10px 15px;
-      font-size: 18px;
-    }
-  }
-</style>
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+    </style>
 </head>
 <body>
 
-  <header>
-    <div id="siteTitle">mourmar</div>
-  </header>
+    <div class="signup-container">
+        <h2>إنشاء حساب جديد</h2>
+        <p>انضم إلى مجتمعنا وتواصل مع أصدقائك.</p>
+        
+        <form action="#" method="POST">
+            <div class="input-group">
+                <label for="fullname">الاسم الكامل</label>
+                <input type="text" id="fullname" name="fullname" placeholder="أدخل اسمك الثلاثي" required>
+            </div>
 
-  <main id="mainContainer">
-    <div class="editor-section" id="editor">
-      <textarea id="htmlCode" placeholder="HTML Code"></textarea>
-      <textarea id="cssCode" placeholder="CSS Code"></textarea>
-      <textarea id="jsCode" placeholder="JavaScript Code"></textarea>
-      <button class="run-btn" onclick="runCode()">Run Code</button>
+            <div class="input-group">
+                <label for="username">اسم المستخدم (Username)</label>
+                <input type="text" id="username" name="username" placeholder="مثال: ahmad_99" required>
+            </div>
+
+            <div class="input-group">
+                <label for="email">البريد الإلكتروني</label>
+                <input type="email" id="email" name="email" placeholder="name@example.com" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">كلمة المرور</label>
+                <input type="password" id="password" name="password" placeholder="أدخل كلمة مرور قوية" required>
+            </div>
+
+            <div class="input-group">
+                <label for="dob">تاريخ الميلاد</label>
+                <input type="date" id="dob" name="dob" required>
+            </div>
+
+            <div class="input-group">
+                <label>الجنس</label>
+                <div class="gender-options">
+                    <label><input type="radio" name="gender" value="male" required> ذكر</label>
+                    <label><input type="radio" name="gender" value="female" required> أنثى</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">تسجيل الحساب</button>
+        </form>
     </div>
-
-    <div id="dragbar"></div>
-
-    <div class="result-section">
-      <iframe id="output"></iframe>
-    </div>
-  </main>
-
-<script>
-  function runCode() {
-    const html = document.getElementById("htmlCode").value;
-    const css = document.getElementById("cssCode").value;
-    const js = document.getElementById("jsCode").value;
-
-    const output = `
-      <html>
-        <head><style>${css}</style></head>
-        <body>${html}<script>${js}<\/script></body>
-      </html>
-    `;
-
-    document.getElementById("output").srcdoc = output;
-  }
-
-  // التحكم في السحب (يعمل فقط على الشاشات الكبيرة)
-  const dragbar = document.getElementById('dragbar');
-  const editor = document.getElementById('editor');
-  const main = document.getElementById('mainContainer');
-
-  let isDragging = false;
-
-  dragbar.addEventListener('mousedown', function(e) {
-    isDragging = true;
-    document.body.style.cursor = 'col-resize';
-  });
-
-  document.addEventListener('mouseup', function(e) {
-    if (isDragging) {
-      isDragging = false;
-      document.body.style.cursor = 'default';
-    }
-  });
-
-  document.addEventListener('mousemove', function(e) {
-    if (!isDragging) return;
-    // التأكد من أن الميزة لا تعمل إذا تحول التصميم لوضع الهاتف
-    if (window.innerWidth <= 768) return; 
-
-    let pointerRelativeXpos = e.clientX - main.getBoundingClientRect().left;
-    let minWidth = main.clientWidth * 0.15;
-    let maxWidth = main.clientWidth * 0.85;
-
-    if (pointerRelativeXpos < minWidth) pointerRelativeXpos = minWidth;
-    if (pointerRelativeXpos > maxWidth) pointerRelativeXpos = maxWidth;
-
-    editor.style.flexBasis = pointerRelativeXpos + 'px';
-  });
-</script>
 
 </body>
 </html>
