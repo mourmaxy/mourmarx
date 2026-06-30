@@ -1,174 +1,405 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إنشاء حساب جديد</title>
+    <title>MOURMAR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* إعدادات التصميم الحديث المظلم */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        :root {
+            --primary: #00205B;
+            --accent: #0056D2;
+            --bg: #F3F4F6;
+            --border: #E5E7EB;
+            --text: #1F2937;
+            --muted: #6B7280;
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); height: 100vh; overflow: hidden; display: flex; }
 
-        body {
-            background-color: #0a0a0a; /* أسود داكن حديث */
-            color: #ffffff; /* نصوص بيضاء */
+        .hidden-layout { display: none !important; }
+
+        /* --- AUTHENTIFICATION --- */
+        #auth-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--primary);
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding: 80px 20px;
-        }
-
-        /* حاوية ممتدة وأنيقة */
-        .signup-container {
-            max-width: 550px;
-            width: 100%;
-        }
-
-        .signup-container h2 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-            margin-bottom: 12px;
-        }
-
-        .signup-container p {
-            color: #888888; /* رمادي خفيف للمظهر الحديث */
-            font-size: 1rem;
-            margin-bottom: 40px;
-        }
-
-        /* تنسيق الحقول الحديثة */
-        .input-group {
-            margin-bottom: 25px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 500;
-            font-size: 0.9rem;
-            color: #cccccc;
-        }
-
-        .input-group input[type="text"],
-        .input-group input[type="email"],
-        .input-group input[type="password"],
-        .input-group input[type="date"] {
-            width: 100%;
-            padding: 16px;
-            border: 1px solid #222222; /* إطار داكن مدمج */
-            background-color: #121212; /* خلفية الحقل أسود خفيف */
-            color: #ffffff;
-            font-size: 0.95rem;
-            border-radius: 8px; /* حواف دائرية ناعمة */
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        /* تأثير التوهج الأبيض الحديث عند التركيز */
-        .input-group input:focus {
-            border-color: #ffffff;
-            background-color: #161616;
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
-        }
-
-        /* خيارات الجنس */
-        .gender-options {
-            display: flex;
-            gap: 30px;
-            margin-top: 10px;
-        }
-
-        .gender-options label {
-            font-weight: normal;
-            cursor: pointer;
-            display: flex;
             align-items: center;
-            gap: 8px;
-            color: #ffffff;
+            z-index: 9999;
         }
-
-        .gender-options input[type="radio"] {
-            accent-color: #ffffff; /* خيار الراديو باللون الأبيض */
-            width: 18px;
-            height: 18px;
+        .auth-card {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
         }
+        .auth-card h1 { color: var(--primary); font-size: 32px; font-weight: 700; margin-bottom: 5px; }
+        .auth-card p { color: var(--muted); font-size: 14px; margin-bottom: 25px; }
+        .form-group { text-align: left; margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 5px; text-transform: uppercase; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 15px; }
+        .form-group input:focus { outline: none; border-color: var(--accent); }
+        .btn-submit { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 16px; }
 
-        /* زر التسجيل الأبيض المتطور */
-        .btn-submit {
-            width: 100%;
-            padding: 16px;
-            background-color: #ffffff;
-            color: #000000;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 20px;
-            letter-spacing: 0.5px;
-        }
+        /* --- INTERFACE WHATSAPP --- */
+        #main-app { display: flex; width: 100%; height: 100vh; background: white; }
+        
+        /* Sidebar */
+        .sidebar { width: 350px; border-right: 1px solid var(--border); display: flex; flex-direction: column; height: 100%; background: white; flex-shrink: 0; }
+        .sidebar-header { padding: 15px 20px; border-bottom: 1px solid var(--border); background: #FAFBFB; }
+        
+        .profile-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .profile-info { display: flex; align-items: center; gap: 10px; }
+        .my-avatar { width: 35px; height: 35px; background: var(--accent); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 600; text-transform: uppercase; font-size: 14px; }
+        .my-username { font-weight: 600; font-size: 14px; color: var(--text); }
+        .logout-icon { color: var(--muted); cursor: pointer; font-size: 18px; }
+        .logout-icon:hover { color: #EF4444; }
 
-        .btn-submit:hover {
-            background-color: #e5e5e5;
-            transform: translateY(-2px); /* تأثير ارتفاع بسيط وجذاب */
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
-        }
+        .search-container { position: relative; display: flex; gap: 8px; }
+        .search-input { flex: 1; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; }
+        .btn-search { background: var(--primary); color: white; border: none; padding: 0 15px; border-radius: 6px; cursor: pointer; }
+        
+        .search-results { position: absolute; top: 45px; left: 0; width: 100%; background: white; border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); z-index: 999; max-height: 200px; overflow-y: auto; display: none; }
+        .result-item { padding: 12px 15px; cursor: pointer; border-bottom: 1px solid #F3F4F6; display: flex; align-items: center; gap: 10px; }
+        .result-item:hover { background: #EEF2F6; }
 
-        .btn-submit:active {
-            transform: translateY(0);
+        /* Contacts List */
+        .contacts-list { flex: 1; overflow-y: auto; }
+        .contact-card { padding: 15px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #F9FAFB; cursor: pointer; }
+        .contact-card:hover { background: #F3F4F6; }
+        .contact-card.active { background: #E0E7FF; border-left: 4px solid var(--accent); }
+        .avatar { width: 40px; height: 40px; background: var(--primary); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 600; text-transform: uppercase; }
+
+        /* Chat Area */
+        .chat-area { flex: 1; display: flex; flex-direction: column; background: #E5DDD5; height: 100vh; min-height: -webkit-fill-available; } 
+        .chat-header { padding: 15px 20px; background: white; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .back-btn { display: none; background: none; border: none; font-size: 18px; cursor: pointer; color: var(--primary); margin-right: 5px; }
+        .chat-header .name { font-weight: 600; font-size: 16px; }
+        
+        /* Messages Box */
+        .messages-box { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .bubble { max-width: 65%; padding: 10px 14px; border-radius: 12px; font-size: 14.5px; line-height: 1.4; word-wrap: break-word; box-shadow: 0 1px 1px rgba(0,0,0,0.1); }
+        
+        .bubble.me { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .bubble.other { background: #FFFFFF !important; color: var(--text) !important; align-self: flex-start; border: 1px solid var(--border); border-bottom-left-radius: 2px; }
+
+        /* تعديل منطقة الكتابة لتثبيتها في الأسفل على الهواتف */
+        .chat-footer { padding: 15px 20px; background: white; border-top: 1px solid var(--border); display: flex; gap: 12px; align-items: center; flex-shrink: 0; }
+        .message-input { flex: 1; padding: 12px 15px; border: 1px solid var(--border); border-radius: 25px; background: #F9FAFB; outline: none; font-size: 15px; }
+        .btn-send { width: 42px; height: 42px; background: var(--primary); color: white; border: none; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 16px; flex-shrink: 0; }
+
+        .empty-view { margin: auto; text-align: center; color: var(--muted); }
+        .empty-view i { font-size: 50px; margin-bottom: 15px; opacity: 0.3; }
+
+        /* إصلاح الهواتف بشكل دقيق جداً */
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; }
+            .sidebar.mobile-hide { display: none !important; }
+            .chat-area { display: none; width: 100%; height: 100%; position: fixed; inset: 0; z-index: 100; }
+            .chat-area.mobile-show { display: flex !important; }
+            .back-btn { display: block; }
         }
     </style>
 </head>
 <body>
 
-    <div class="signup-container">
-        <h2>إنشاء حساب جديد</h2>
-        <p>انضم إلى مجتمعنا وتواصل مع أصدقائك.</p>
-        
-        <form action="#" method="POST">
-            <div class="input-group">
-                <label for="fullname">الاسم الكامل</label>
-                <input type="text" id="fullname" name="fullname" placeholder="أدخل اسمك الثلاثي" required>
+    <div id="auth-screen">
+        <div class="auth-card">
+            <h1>MOURMAR</h1>
+            <p>Créez votre compte de messagerie</p>
+            <form id="auth-form">
+                <div class="form-group">
+                    <label>Nom d'utilisateur</label>
+                    <input type="text" id="username-field" placeholder="Ex: Mourad" required>
+                </div>
+                <div class="form-group">
+                    <label>Email (Gmail)</label>
+                    <input type="email" id="email-field" placeholder="mourad@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <input type="password" id="password-field" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-submit" id="btn-submit-text">S'inscrire et Entrer</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="main-app" class="hidden-layout">
+        <aside class="sidebar" id="app-sidebar">
+            <div class="sidebar-header">
+                <div class="profile-bar">
+                    <div class="profile-info">
+                        <div class="my-avatar" id="my-profile-avatar">?</div>
+                        <div class="my-username" id="my-profile-name">Chargement...</div>
+                    </div>
+                    <i class="fa-solid fa-right-from-bracket logout-icon" id="btn-logout" title="Déconnexion"></i>
+                </div>
+                <div class="search-container">
+                    <input type="text" id="input-search" class="search-input" placeholder="Chercher un utilisateur...">
+                    <button class="btn-search" id="btn-search-trigger"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <div class="search-results" id="search-dropdown"></div>
+                </div>
+            </div>
+            <div class="contacts-list" id="contacts-display-list"></div>
+        </aside>
+
+        <main class="chat-area" id="app-chat-area">
+            <div class="chat-header" id="active-chat-header" style="display: none;">
+                <button class="back-btn" id="btn-back-mobile"><i class="fa-solid fa-arrow-left"></i></button>
+                <div class="avatar" style="width:35px; height:35px; font-size:13px;" id="active-avatar">?</div>
+                <div class="name" id="active-username-title">Nom</div>
             </div>
 
-            <div class="input-group">
-                <label for="username">اسم المستخدم (Username)</label>
-                <input type="text" id="username" name="username" placeholder="مثال: ahmad_99" required>
-            </div>
-
-            <div class="input-group">
-                <label for="email">البريد الإلكتروني</label>
-                <input type="email" id="email" name="email" placeholder="name@example.com" required>
-            </div>
-
-            <div class="input-group">
-                <label for="password">كلمة المرور</label>
-                <input type="password" id="password" name="password" placeholder="أدخل كلمة مرور قوية" required>
-            </div>
-
-            <div class="input-group">
-                <label for="dob">تاريخ الميلاد</label>
-                <input type="date" id="dob" name="dob" required>
-            </div>
-
-            <div class="input-group">
-                <label>الجنس</label>
-                <div class="gender-options">
-                    <label><input type="radio" name="gender" value="male" required> ذكر</label>
-                    <label><input type="radio" name="gender" value="female" required> أنثى</label>
+            <div class="messages-box" id="messages-container">
+                <div class="empty-view" id="initial-empty-view">
+                    <i class="fa-regular fa-comments"></i>
+                    <p>Sélectionnez ou recherchez un contact<br>pour démarrer une discussion.</p>
                 </div>
             </div>
 
-            <button type="submit" class="btn-submit">تسجيل الحساب</button>
-        </form>
+            <div class="chat-footer" id="active-chat-footer" style="display: none;">
+                <input type="text" class="message-input" id="input-message-text" placeholder="Écrivez votre message...">
+                <button class="btn-send" id="btn-send-message"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </main>
     </div>
 
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://tlalktzocrgwjcyklvff.supabase.co"; 
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsYWxrdHpvY3Jnd2pjeWtsdmZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzM0MzgsImV4cCI6MjA5ODMwOTQzOH0.UQK6hAp0EfR4y7R--3QkqJyFIP2ECPOw-UML7DovxZc"; 
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let myUser = null;
+        let myUsername = "";
+        let currentChatUser = null;
+        let savedContacts = JSON.parse(localStorage.getItem('mourmar_saved_list') || "[]");
+
+        async function initApp() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (user) {
+                myUser = user;
+                const { data: profile } = await supabaseClient.from('profiles').select('username').eq('id', user.id).single();
+                if (profile) {
+                    myUsername = profile.username;
+                } else {
+                    myUsername = user.user_metadata.username || "User_" + user.id.substring(0,4);
+                    await supabaseClient.from('profiles').upsert([{ id: user.id, username: myUsername }]);
+                }
+                launchMainInterface();
+            }
+        }
+
+        document.getElementById('auth-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userText = document.getElementById('username-field').value.trim();
+            const emailText = document.getElementById('email-field').value.trim();
+            const passText = document.getElementById('password-field').value;
+            const btn = document.getElementById('btn-submit-text');
+            
+            btn.innerText = "Connexion en cours...";
+            btn.disabled = true;
+
+            const { data, error } = await supabaseClient.auth.signUp({
+                email: emailText, password: passText, options: { data: { username: userText } }
+            });
+
+            if (error) {
+                alert("Erreur: " + error.message);
+                btn.innerText = "S'inscrire et Entrer";
+                btn.disabled = false;
+                return;
+            }
+
+            if (data.user) {
+                myUser = data.user;
+                myUsername = userText;
+                
+                const { error: upsertError } = await supabaseClient.from('profiles').upsert([
+                    { id: data.user.id, username: userText }
+                ]);
+
+                if(upsertError) {
+                    await supabaseClient.from('profiles').insert([
+                        { id: data.user.id, username: userText }
+                    ]);
+                }
+
+                launchMainInterface();
+            }
+        });
+
+        function launchMainInterface() {
+            document.getElementById('auth-screen').classList.add('hidden-layout');
+            document.getElementById('main-app').classList.remove('hidden-layout');
+            
+            document.getElementById('my-profile-name').innerText = myUsername;
+            document.getElementById('my-profile-avatar').innerText = myUsername.charAt(0).toUpperCase();
+            
+            drawContactsSidebar();
+        }
+
+        const searchInput = document.getElementById('input-search');
+        const searchDropdown = document.getElementById('search-dropdown');
+
+        async function searchUsers() {
+            const q = searchInput.value.trim();
+            if(!q) { searchDropdown.style.display = "none"; return; }
+
+            const { data } = await supabaseClient.from('profiles').select('username').ilike('username', `%${q}%`);
+            searchDropdown.innerHTML = "";
+
+            if(data && data.length > 0) {
+                searchDropdown.style.display = "block";
+                data.forEach(p => {
+                    if(p.username.toLowerCase() === myUsername.toLowerCase()) return; 
+                    
+                    const d = document.createElement('div');
+                    d.className = "result-item";
+                    d.innerHTML = `<div class="avatar" style="width:28px; height:28px; font-size:11px;">${p.username.charAt(0)}</div> <span>${p.username}</span>`;
+                    
+                    d.onclick = () => {
+                        saveContactToList(p.username);
+                        openChatWindow(p.username);
+                        searchDropdown.style.display = "none";
+                        searchInput.value = "";
+                    };
+                    searchDropdown.appendChild(d);
+                });
+            } else {
+                searchDropdown.style.display = "block";
+                searchDropdown.innerHTML = `<div class="result-item" style="color:var(--muted); font-size:13px; cursor:default;">Aucun utilisateur trouvé</div>`;
+            }
+        }
+
+        document.getElementById('btn-search-trigger').onclick = searchUsers;
+        searchInput.onkeyup = (e) => { searchUsers(); };
+
+        function saveContactToList(username) {
+            if(!savedContacts.includes(username)) {
+                savedContacts.unshift(username);
+                localStorage.setItem('mourmar_saved_list', JSON.stringify(savedContacts));
+                drawContactsSidebar();
+            }
+        }
+
+        function drawContactsSidebar() {
+            const container = document.getElementById('contacts-display-list');
+            container.innerHTML = "";
+
+            if(savedContacts.length === 0) {
+                container.innerHTML = `<div style="padding:30px; text-align:center; font-size:13px; color:var(--muted)">Utilisez la barre de recherche pour ajouter des contacts.</div>`;
+                return;
+            }
+
+            savedContacts.forEach(name => {
+                const card = document.createElement('div');
+                card.className = `contact-card ${currentChatUser === name ? 'active' : ''}`;
+                card.innerHTML = `
+                    <div class="avatar">${name.charAt(0)}</div>
+                    <div>
+                        <div class="name">${name}</div>
+                        <div style="font-size:12px; color:var(--muted)">Discuter maintenant</div>
+                    </div>
+                `;
+                card.onclick = () => openChatWindow(name);
+                container.appendChild(card);
+            });
+        }
+
+        function openChatWindow(username) {
+            currentChatUser = username;
+            drawContactsSidebar();
+
+            if (window.innerWidth <= 768) {
+                document.getElementById('app-sidebar').classList.add('mobile-hide');
+                document.getElementById('app-chat-area').classList.add('mobile-show');
+            }
+
+            document.getElementById('initial-empty-view').style.display = "none";
+            document.getElementById('active-chat-header').style.display = "flex";
+            document.getElementById('active-chat-footer').style.display = "flex";
+            
+            document.getElementById('active-username-title').innerText = username;
+            document.getElementById('active-avatar').innerText = username.charAt(0).toUpperCase();
+
+            fetchMessages();
+        }
+
+        async function fetchMessages() {
+            if(!currentChatUser || !myUsername) return;
+
+            const { data } = await supabaseClient
+                .from('messages')
+                .select('*')
+                .or(`and(sender_name.eq.${myUsername},receiver_username.eq.${currentChatUser}),and(sender_name.eq.${currentChatUser},receiver_username.eq.${myUsername})`)
+                .order('created_at', { ascending: true });
+
+            const box = document.getElementById('messages-container');
+            box.innerHTML = "";
+
+            if(data && data.length > 0) {
+                data.forEach(m => {
+                    const b = document.createElement('div');
+                    const isMe = m.sender_name.trim().toLowerCase() === myUsername.trim().toLowerCase();
+                    b.className = `bubble ${isMe ? 'me' : 'other'}`;
+                    b.innerText = m.message_text;
+                    box.appendChild(b);
+                });
+                box.scrollTop = box.scrollHeight;
+            } else {
+                box.innerHTML = `<div class="empty-view"><p>Aucun message ici. Écrivez quelque chose !</p></div>`;
+            }
+        }
+
+        async function pushMessage() {
+            const input = document.getElementById('input-message-text');
+            const val = input.value.trim();
+            if(!val || !currentChatUser || !myUser) return;
+
+            const { error } = await supabaseClient.from('messages').insert([{
+                sender_id: myUser.id,
+                sender_name: myUsername,
+                receiver_username: currentChatUser,
+                message_text: val
+            }]);
+
+            if(!error) {
+                input.value = "";
+                fetchMessages();
+            }
+        }
+
+        document.getElementById('btn-send-message').onclick = pushMessage;
+        document.getElementById('input-message-text').onkeypress = (e) => { if(e.key === 'Enter') pushMessage(); };
+
+        setInterval(fetchMessages, 3000);
+
+        document.getElementById('btn-back-mobile').onclick = () => {
+            document.getElementById('app-sidebar').classList.remove('mobile-hide');
+            document.getElementById('app-chat-area').classList.remove('mobile-show');
+        };
+
+        document.getElementById('btn-logout').onclick = async () => {
+            await supabaseClient.auth.signOut();
+            localStorage.removeItem('mourmar_saved_list');
+            window.location.reload();
+        };
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) searchDropdown.style.display = "none";
+        });
+
+        window.onload = initApp;
+    </script>
 </body>
 </html>
